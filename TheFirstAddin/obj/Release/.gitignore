@@ -1,0 +1,4 @@
+*.csproj.GenerateResource.Cache
+/TheFirstAddin.csprojResolveAssemblyReference.cache
+/TheFirstAddin.dll
+/TheFirstAddin.pdb

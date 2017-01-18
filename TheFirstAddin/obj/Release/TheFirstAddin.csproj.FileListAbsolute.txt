@@ -1,0 +1,12 @@
+D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\bin\Release\TheFirstAddin.dll
+D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\bin\Release\TheFirstAddin.pdb
+D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\bin\Release\TheFirstAddin.dll.manifest
+D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\bin\Release\TheFirstAddin.vsto
+D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\bin\Release\Microsoft.Office.Tools.Common.v4.0.Utilities.dll
+D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\bin\Release\Microsoft.Office.Tools.Common.v4.0.Utilities.xml
+D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\obj\Release\TheFirstAddin.csprojResolveAssemblyReference.cache
+D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\obj\Release\TheFirstAddin.Ribbon.resources
+D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\obj\Release\TheFirstAddin.Properties.Resources.resources
+D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\obj\Release\TheFirstAddin.csproj.GenerateResource.Cache
+D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\obj\Release\TheFirstAddin.dll
+D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\obj\Release\TheFirstAddin.pdb

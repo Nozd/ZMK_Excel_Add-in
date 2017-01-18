@@ -1,0 +1,4 @@
+*.Office.Tools.Common.v4.0.Utilities.dll
+/TheFirstAddin.dll
+/TheFirstAddin.dll.manifest
+/TheFirstAddin.pdb
