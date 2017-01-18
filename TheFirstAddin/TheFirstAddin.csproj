@@ -157,6 +157,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Helpers\Validate.cs" />
     <Compile Include="Ribbon.cs">
       <SubType>Component</SubType>
     </Compile>
