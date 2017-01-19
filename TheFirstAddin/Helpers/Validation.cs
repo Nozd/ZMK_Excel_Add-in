@@ -11,7 +11,7 @@ using Microsoft.Office.Tools.Ribbon;
 
 namespace TheFirstAddin
 {
-    static class Validate
+    static class Validation
     {
         //Validation selection rows
         internal static bool ValidateRows(Excel.Range range)
