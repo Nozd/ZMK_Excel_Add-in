@@ -157,7 +157,8 @@
     can be found.
   -->
   <ItemGroup>
-    <Compile Include="Helpers\Validate.cs" />
+    <Compile Include="Helpers\FillingForm.cs" />
+    <Compile Include="Helpers\Validation.cs" />
     <Compile Include="Ribbon.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -179,6 +180,9 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Content Include="app.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
