@@ -159,6 +159,9 @@
   <ItemGroup>
     <Compile Include="Helpers\FillingForm.cs" />
     <Compile Include="Helpers\Validation.cs" />
+    <Compile Include="Models\Door.cs" />
+    <Compile Include="Models\doorType.cs" />
+    <Compile Include="Models\doorTypeSet.cs" />
     <Compile Include="Ribbon.cs">
       <SubType>Component</SubType>
     </Compile>
