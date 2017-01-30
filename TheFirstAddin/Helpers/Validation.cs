@@ -49,7 +49,7 @@ namespace TheFirstAddin
                 return ShowNonValidationMessage();
             }
             //TODO: удалить row, к-рые содержатся в строках
-            MessageBox.Show("Aasdll is Oak!");
+            //MessageBox.Show("Aasdll is Oak!");
             int rank;//rank of selection range
             rank = range.Value2.Rank;
             if (rank > 1)

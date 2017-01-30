@@ -46,6 +46,7 @@ namespace TheFirstAddin
         private void ribbon_ButtonClicked()
         {
             Excel.Range range = Globals.ThisAddIn.Application.Selection as Excel.Range;
+            Excel.Worksheet sheet = Globals.ThisAddIn.Application.ActiveSheet;
             if (!Validation.ValidateRows(range))
             {
                 //return;
@@ -62,18 +63,61 @@ namespace TheFirstAddin
 
                     int x = row.Column;
                     int y = row.Row;
+                    doorType tempDoorType = new doorType();
                     //Номер двери
-                    door.NumberDoor = range.Cells[y, 4].Value;
-                    //Наименование
-                    string graphWholeName = range.Cells[y, 5].Value.Trim(new[] { ' ' });
-                    string[] graphWholeNameDivided = graphWholeName.Split(new[] {' '});
+                    door.NumberDoor = sheet.Cells[y, 4].Value;
+                    //Парсим наименование
+                    string graphWholeName = sheet.Cells[y, 5].Value.Trim(new[] { ' ' });
+                    //Название двери
+                    string[] graphWholeNameDivided = graphWholeName.Split(new[] {' ', '(', ')', '.'});
                     foreach (var dtsItem in dts.DoorTS)
                     {
                         if (String.Equals(graphWholeNameDivided[0], dtsItem.GraphName))
                         {
                             door.NameDoor = dtsItem.PassportName;
+                            tempDoorType = dtsItem;
                             break;
                         }
+                    }
+                    //Является ли двухстворчатой
+                    if (tempDoorType.PassportName.Contains('2'))
+                    {
+                        tempDoorType.IsDouble = true;
+                    }
+                    //Размеры двери
+                    int h, w, wwl;
+                    door.Height = int.TryParse(graphWholeNameDivided[1], out h) ? h : 0;
+                    door.Width = int.TryParse(graphWholeNameDivided[3], out w) ? w : 0;
+                    if (tempDoorType.IsDouble)
+                    {
+                        if (Array.IndexOf(graphWholeNameDivided, "равные") == -1)
+                        {
+                            int indexWorkLeaf = Array.IndexOf(graphWholeNameDivided, "ств");
+                            door.WidthWorkLeaf = indexWorkLeaf > (-1) &&
+                                                 int.TryParse(graphWholeNameDivided[indexWorkLeaf + 1], out wwl)
+                                ? wwl
+                                : 0;
+                        }
+                        else
+                        {
+                            door.WidthWorkLeaf = (int)Math.Floor((double)(door.Width / 2));
+                        }
+                    }
+                    //Определение кол-ва петель
+                    if (tempDoorType.IsDouble)
+                    {
+                        door.IsThreeLoop = door.WidthWorkLeaf >= 1000;
+                    } else if (tempDoorType.IsAngular)
+                    {
+                        door.IsThreeLoop = door.Height >= 2200
+                                           || door.Width >= 1000;
+                                           //|| tempDoorType.IsDouble && door.WidthWorkLeaf >= 1000;
+                    }
+                    else
+                    {
+                        door.IsThreeLoop = door.Height >= 2250
+                                           || door.Width >= 1100;
+                        //|| tempDoorType.IsDouble && door.WidthWorkLeaf >= 1100;
                     }
 
                     doorList.Add(door);
