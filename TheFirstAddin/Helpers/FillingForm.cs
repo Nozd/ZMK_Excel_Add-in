@@ -49,7 +49,7 @@ namespace TheFirstAddin
                 activeCell.HorizontalAlignment = Excel.XlHAlign.xlHAlignCenter;
                 activeCell.VerticalAlignment = Excel.XlHAlign.xlHAlignCenter;
                 //
-                sh.Cells[2, 1] = String.Concat(door.NameDoor," №", door.NumberDoor);
+                sh.Cells[2, 1] = String.Concat(PassportNameSet.Dic[door.DoorType.PassportNameEnum]," №", door.NumberDoor);
                 activeCell = sh.Range[sh.Cells[2, 1], sh.Cells[2, 7]];
                 activeCell.Merge(true);
                 activeCell.Font.Size = 14;
@@ -57,30 +57,44 @@ namespace TheFirstAddin
                 activeCell.HorizontalAlignment = 3;
                 activeCell.VerticalAlignment = 3;
                 //
-                sh.Cells[4, 1] = "1";
-                sh.Cells[4, 2] = ".";
-                sh.Cells[4, 3] =
-                    "Дверь в сборе с установленным замком, ригелем, петлевыми подшипниками и ответной планкой";
-                sh.Range[sh.Cells[4, 3], sh.Cells[4, 4]].Merge(true);
-                sh.Range[sh.Cells[4, 1], sh.Cells[4, 1]].RowHeight = Math.Truncate(sh.Range[sh.Cells[4, 1], sh.Cells[4, 1]].RowHeight/relHeight);
-                sh.Cells[4, 5] = "1";
-                sh.Cells[4, 7] = "к-кт";
-                //
-                sh.Cells[5, 1] = "2";
-                sh.Cells[5, 2] = ".";
-                sh.Cells[5, 3] = "Цилиндр замка с комплектом ключей и винтом";
-                sh.Range[sh.Cells[5, 3], sh.Cells[5, 4]].Merge(true);
-                sh.Range[sh.Cells[5, 1], sh.Cells[5, 1]].RowHeight = Math.Truncate(sh.Range[sh.Cells[5, 1], sh.Cells[5, 1]].RowHeight/relHeight);
-                sh.Cells[5, 5] = "1";
-                sh.Cells[5, 7] = "к-кт";
-                //
-                sh.Cells[6, 1] = "3";
-                sh.Cells[6, 2] = ".";
-                sh.Cells[6, 3] = "Ручка со стяжными винтами и накладками";
-                sh.Range[sh.Cells[6, 3], sh.Cells[6, 4]].Merge(true);
-                sh.Range[sh.Cells[6, 1], sh.Cells[6, 1]].RowHeight = Math.Truncate(sh.Range[sh.Cells[6, 1], sh.Cells[6, 1]].RowHeight/relHeight);
-                sh.Cells[6, 5] = "1";
-                sh.Cells[6, 7] = "к-кт";
+                int rowNumber = 4;
+                int rowPosition = 1;
+                foreach (var Internal in door.Internals)
+                {
+                    sh.Cells[rowNumber, 1] = rowPosition;
+                    sh.Cells[rowNumber, 2] = ".";
+                    sh.Cells[rowNumber, 3] = Internal.Name;
+                    sh.Range[sh.Cells[rowNumber, 3], sh.Cells[rowNumber, 4]].Merge(true);
+                    sh.Range[sh.Cells[rowNumber, 1], sh.Cells[rowNumber, 1]].RowHeight = Math.Truncate(sh.Range[sh.Cells[rowNumber, 1], sh.Cells[rowNumber, 1]].RowHeight / relHeight);
+                    sh.Cells[rowNumber, 5] = Internal.Count;
+                    sh.Cells[rowNumber, 7] = Internal.Unit;
+                    ++rowNumber;
+                    ++rowPosition;
+                }
+                //sh.Cells[4, 1] = "1";
+                //sh.Cells[4, 2] = ".";
+                //sh.Cells[4, 3] =
+                //    "Дверь в сборе с установленным замком, ригелем, петлевыми подшипниками и ответной планкой";
+                //sh.Range[sh.Cells[4, 3], sh.Cells[4, 4]].Merge(true);
+                //sh.Range[sh.Cells[4, 1], sh.Cells[4, 1]].RowHeight = Math.Truncate(sh.Range[sh.Cells[4, 1], sh.Cells[4, 1]].RowHeight/relHeight);
+                //sh.Cells[4, 5] = "1";
+                //sh.Cells[4, 7] = "к-кт";
+                ////
+                //sh.Cells[5, 1] = "2";
+                //sh.Cells[5, 2] = ".";
+                //sh.Cells[5, 3] = "Цилиндр замка с комплектом ключей и винтом";
+                //sh.Range[sh.Cells[5, 3], sh.Cells[5, 4]].Merge(true);
+                //sh.Range[sh.Cells[5, 1], sh.Cells[5, 1]].RowHeight = Math.Truncate(sh.Range[sh.Cells[5, 1], sh.Cells[5, 1]].RowHeight/relHeight);
+                //sh.Cells[5, 5] = "1";
+                //sh.Cells[5, 7] = "к-кт";
+                ////
+                //sh.Cells[6, 1] = "3";
+                //sh.Cells[6, 2] = ".";
+                //sh.Cells[6, 3] = "Ручка со стяжными винтами и накладками";
+                //sh.Range[sh.Cells[6, 3], sh.Cells[6, 4]].Merge(true);
+                //sh.Range[sh.Cells[6, 1], sh.Cells[6, 1]].RowHeight = Math.Truncate(sh.Range[sh.Cells[6, 1], sh.Cells[6, 1]].RowHeight/relHeight);
+                //sh.Cells[6, 5] = "1";
+                //sh.Cells[6, 7] = "к-кт";
                 //
 
                 //Подпись

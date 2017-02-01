@@ -11,4 +11,3 @@ D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\obj\Debug\TheFirstAddi
 D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\obj\Debug\TheFirstAddin.pdb
 D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\bin\Debug\app.config
 D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\bin\Debug\TheFirstAddin.dll.config
-D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\obj\Debug\TheFirstAddin.csprojResolveAssemblyReference.cache

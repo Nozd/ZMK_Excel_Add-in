@@ -9,6 +9,7 @@ using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Excel;
 using Microsoft.Office.Tools.Ribbon;
+using TheFirstAddin.Data;
 
 namespace TheFirstAddin
 {
@@ -63,32 +64,30 @@ namespace TheFirstAddin
 
                     int x = row.Column;
                     int y = row.Row;
-                    doorType tempDoorType = new doorType();
                     //Номер двери
                     door.NumberDoor = sheet.Cells[y, 4].Value;
                     //Парсим наименование
                     string graphWholeName = sheet.Cells[y, 5].Value.Trim(new[] { ' ' });
-                    //Название двери
+                    //Идентификация двери
                     string[] graphWholeNameDivided = graphWholeName.Split(new[] {' ', '(', ')', '.'});
                     foreach (var dtsItem in dts.DoorTS)
                     {
                         if (String.Equals(graphWholeNameDivided[0], dtsItem.GraphName))
                         {
-                            door.NameDoor = dtsItem.PassportName;
-                            tempDoorType = dtsItem;
+                            door.DoorType = dtsItem;
                             break;
                         }
                     }
                     //Является ли двухстворчатой
-                    if (tempDoorType.PassportName.Contains('2'))
+                    if (PassportNameSet.Dic[door.DoorType.PassportNameEnum].Contains('2'))
                     {
-                        tempDoorType.IsDouble = true;
+                        door.DoorType.IsDouble = true;
                     }
                     //Размеры двери
                     int h, w, wwl;
                     door.Height = int.TryParse(graphWholeNameDivided[1], out h) ? h : 0;
                     door.Width = int.TryParse(graphWholeNameDivided[3], out w) ? w : 0;
-                    if (tempDoorType.IsDouble)
+                    if (door.DoorType.IsDouble)
                     {
                         if (Array.IndexOf(graphWholeNameDivided, "равные") == -1)
                         {
@@ -104,10 +103,11 @@ namespace TheFirstAddin
                         }
                     }
                     //Определение кол-ва петель
-                    if (tempDoorType.IsDouble)
+                    if (door.DoorType.IsDouble)
                     {
                         door.IsThreeLoop = door.WidthWorkLeaf >= 1000;
-                    } else if (tempDoorType.IsAngular)
+                    }
+                    else if (door.DoorType.IsAngular)
                     {
                         door.IsThreeLoop = door.Height >= 2200
                                            || door.Width >= 1000;
@@ -119,7 +119,12 @@ namespace TheFirstAddin
                                            || door.Width >= 1100;
                         //|| tempDoorType.IsDouble && door.WidthWorkLeaf >= 1100;
                     }
-
+                    //Описание основной/рабочей створки
+                    door.Internals.Add(new Door.Internal(DescriptionMainLeafSet.Dic[door.DoorType.PassportNameEnum], 1, UnitSet.Dic[UnitSet.Enum.Thing]));
+                    if (door.DoorType.IsDouble)
+                    {
+                        door.Internals.Add(new Door.Internal(DescriptionSecondLeafSet.Dic[door.DoorType.PassportNameEnum], 1, UnitSet.Dic[UnitSet.Enum.Thing]));
+                    }
                     doorList.Add(door);
                 }
             }

@@ -11,8 +11,11 @@ namespace TheFirstAddin
         {
             IsAngular = true;
         }
-        public string GraphName { get; set; }
-        public string PassportName { get; set; }
+        public string GraphName { get; set; }//Название в графике
+        //public string PassportName { get; set; }//Название в паспорте
+        public PassportNameSet.Enum PassportNameEnum { get; set; }
+        public string DescriptionMainLeaf { get; set; }//Первая позиция в паспорте: описание основной или рабочей створки
+        public string DescriptionSecondLeaf { get; set; }//Описание ответной створки
         public bool IsDouble { get; set; }//Является двухстворчатой
         public bool IsAngular { get; set; }//Является угловой
     }

@@ -157,6 +157,10 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Data\DescriptionMainLeafSet.cs" />
+    <Compile Include="Data\DescriptionSecondLeafSet.cs" />
+    <Compile Include="Data\PassportNameSet.cs" />
+    <Compile Include="Data\UnitSet.cs" />
     <Compile Include="Helpers\FillingForm.cs" />
     <Compile Include="Helpers\Validation.cs" />
     <Compile Include="Models\Door.cs" />
