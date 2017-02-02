@@ -66,7 +66,7 @@ namespace TheFirstAddin
                     int y = row.Row;
                     //Номер двери
                     door.NumberDoor = sheet.Cells[y, 4].Value;
-                    //Парсим наименование
+#region Парсим наименование
                     string graphWholeName = sheet.Cells[y, 5].Value.Trim(new[] { ' ' });
                     //Идентификация двери
                     string[] graphWholeNameDivided = graphWholeName.Split(new[] {' ', '(', ')', '.'});
@@ -119,12 +119,40 @@ namespace TheFirstAddin
                                            || door.Width >= 1100;
                         //|| tempDoorType.IsDouble && door.WidthWorkLeaf >= 1100;
                     }
+#endregion
+#region Парсим тип порога
+                    string graphThreshold = sheet.Cells[y, 10].Value;
+                    graphThreshold = string.IsNullOrEmpty(graphThreshold) ? "" : graphThreshold.Trim(new[] { ' ' }).ToLower();
+                    foreach (KeyValuePair<ThresholdSet.Enum, string> item in ThresholdSet.Dic)
+                    {
+                        if (string.Equals(item.Value, graphThreshold))
+                        {
+                            door.DoorType.Threshold = item.Key;
+                            break;
+                        }
+                    }
+#endregion
+#region Парсим тип запирающего механизма
+                    string lockType = sheet.Cells[y, 14].Value;
+                    lockType = string.IsNullOrEmpty(lockType) ? "" : lockType.Trim(new[] { ' ' }).ToLower();
+                    foreach (KeyValuePair<LockSet.Enum, string> item in LockSet.Dic)
+                    {
+                        if (string.Equals(item.Value.ToLower(), lockType))
+                        {
+                            door.DoorType.Lock = item.Key;
+                            break;
+                        }
+                    }
+#endregion
                     //Описание основной/рабочей створки
-                    door.Internals.Add(new Door.Internal(DescriptionMainLeafSet.Dic[door.DoorType.PassportNameEnum], 1, UnitSet.Dic[UnitSet.Enum.Thing]));
+                    door.Internals.Add(new Door.Internal(DescriptionMainLeafSet.Dic[door.DoorType.PassportNameEnum], 1, UnitSet.Dic[UnitSet.Enum.Kit]));
                     if (door.DoorType.IsDouble)
                     {
-                        door.Internals.Add(new Door.Internal(DescriptionSecondLeafSet.Dic[door.DoorType.PassportNameEnum], 1, UnitSet.Dic[UnitSet.Enum.Thing]));
+                        door.Internals.Add(new Door.Internal(DescriptionSecondLeafSet.Dic[door.DoorType.PassportNameEnum], 1, UnitSet.Dic[UnitSet.Enum.Kit]));
                     }
+                    door.Internals.Add(new Door.Internal("Цилиндр замка с комплектом ключей и винтом", 1, UnitSet.Dic[UnitSet.Enum.Kit]));
+                    door.Internals.Add(new Door.Internal("Ручка со стяжными винтами и накладками", 1, UnitSet.Dic[UnitSet.Enum.Kit]));
+                    door.Internals.Add(new Door.Internal(SquareSet.Dic[door.DoorType.Lock], 1, UnitSet.Dic[UnitSet.Enum.Thing]));
                     doorList.Add(door);
                 }
             }

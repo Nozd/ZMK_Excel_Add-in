@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using TheFirstAddin.Data;
 
 namespace TheFirstAddin
 {
@@ -12,8 +13,9 @@ namespace TheFirstAddin
             IsAngular = true;
         }
         public string GraphName { get; set; }//Название в графике
-        //public string PassportName { get; set; }//Название в паспорте
         public PassportNameSet.Enum PassportNameEnum { get; set; }
+        public ThresholdSet.Enum Threshold { get; set; }
+        public LockSet.Enum Lock { get; set; }
         public string DescriptionMainLeaf { get; set; }//Первая позиция в паспорте: описание основной или рабочей створки
         public string DescriptionSecondLeaf { get; set; }//Описание ответной створки
         public bool IsDouble { get; set; }//Является двухстворчатой

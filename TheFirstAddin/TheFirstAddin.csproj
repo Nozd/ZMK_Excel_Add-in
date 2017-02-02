@@ -159,7 +159,10 @@
   <ItemGroup>
     <Compile Include="Data\DescriptionMainLeafSet.cs" />
     <Compile Include="Data\DescriptionSecondLeafSet.cs" />
+    <Compile Include="Data\LockSet.cs" />
     <Compile Include="Data\PassportNameSet.cs" />
+    <Compile Include="Data\SquareSet.cs" />
+    <Compile Include="Data\ThresholdSet.cs" />
     <Compile Include="Data\UnitSet.cs" />
     <Compile Include="Helpers\FillingForm.cs" />
     <Compile Include="Helpers\Validation.cs" />
