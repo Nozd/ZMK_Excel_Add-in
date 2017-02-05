@@ -13,12 +13,22 @@ namespace TheFirstAddin
             IsAngular = true;
         }
         public string GraphName { get; set; }//Название в графике
-        public PassportNameSet.Enum PassportNameEnum { get; set; }
-        public ThresholdSet.Enum Threshold { get; set; }
-        public LockSet.Enum Lock { get; set; }
+        public PassportNameSet.Enum PassportNameEnum { get; set; }//Название в паспорте
+        public ThresholdSet.Enum Threshold { get; set; }//Тип порога
+        public LockSet.Enum Lock { get; set; }//Тип замка
         public string DescriptionMainLeaf { get; set; }//Первая позиция в паспорте: описание основной или рабочей створки
         public string DescriptionSecondLeaf { get; set; }//Описание ответной створки
         public bool IsDouble { get; set; }//Является двухстворчатой
-        public bool IsAngular { get; set; }//Является угловой
+        private bool _isAngular;
+
+        public bool IsAngular
+        {
+            get
+            {
+                return string.Equals(GraphName.ToLower()[GraphName.Length - 1], 'у');
+            }
+            set { _isAngular = value; }
+        }//Является угловой
+        public bool IsGlazed { get; set; }//Есть ли остекление
     }
 }
