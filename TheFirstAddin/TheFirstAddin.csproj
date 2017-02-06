@@ -165,6 +165,7 @@
     <Compile Include="Data\ThresholdSet.cs" />
     <Compile Include="Data\UnitSet.cs" />
     <Compile Include="Helpers\FillingForm.cs" />
+    <Compile Include="Helpers\Parser.cs" />
     <Compile Include="Helpers\Validation.cs" />
     <Compile Include="Models\Door.cs" />
     <Compile Include="Models\doorType.cs" />
