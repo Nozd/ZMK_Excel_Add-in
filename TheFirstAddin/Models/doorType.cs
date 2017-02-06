@@ -12,7 +12,14 @@ namespace TheFirstAddin
         {
             IsAngular = true;
         }
-        public string GraphName { get; set; }//Название в графике
+
+        private string _graphName;
+
+        public string GraphName
+        {
+            get { return _graphName.ToLower(); }
+            set { _graphName = value; }
+        }//Название в графике
         public PassportNameSet.Enum PassportNameEnum { get; set; }//Название в паспорте
         public ThresholdSet.Enum Threshold { get; set; }//Тип порога
         public LockSet.Enum Lock { get; set; }//Тип замка

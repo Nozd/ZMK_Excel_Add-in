@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml.Linq;
+using System.Xml.Xsl;
 using Excel = Microsoft.Office.Interop.Excel;
 using Office = Microsoft.Office.Core;
 using Microsoft.Office.Tools.Excel;
@@ -85,10 +86,12 @@ namespace TheFirstAddin
                         door.GlazingHeight = int.TryParse(graphGlazingDivided[1], out glathingHeight) ? glathingHeight : 0;
                     }
 #endregion
+
 #region Парсим наименование
-                    string graphWholeName = sheet.Cells[y, 5].Value.Trim(new[] { ' ' });
+                    string graphWholeName = sheet.Cells[y, 5].Value;
+                    graphWholeName = string.IsNullOrEmpty(graphWholeName) ? "" : graphWholeName.Trim(new[] { ' ' }).ToLower();
                     //Идентификация двери
-                    string[] graphWholeNameDivided = graphWholeName.Split(new[] {' ', '(', ')', '.'});
+                    string[] graphWholeNameDivided = graphWholeName.Split(new string[] { " ", "(", ")", ".", "mm", "мм" }, StringSplitOptions.None);
                     foreach (var dtsItem in dts.DoorTS)
                     {
                         if (String.Equals(graphWholeNameDivided[0], dtsItem.GraphName))
@@ -102,13 +105,19 @@ namespace TheFirstAddin
                     {
                         door.DoorType.IsDouble = true;
                     }
-    #region Размеры двери
+   
+#endregion
+#region Парсим размеры двери
+                    string graphDoorSize = sheet.Cells[y, 8].Value.Trim(new[] { ' ' });
+                    graphDoorSize = string.IsNullOrEmpty(graphDoorSize) ? "" : graphDoorSize.Trim(new[] { ' ' }).ToLower();
+                    string[] graphDoorSizeDivided = graphDoorSize.Split(new char[]{'*', 'x', 'х'});
                     int h, w, wwl;
-                    door.Height = int.TryParse(graphWholeNameDivided[1], out h) ? h : 0;
-                    door.Width = int.TryParse(graphWholeNameDivided[3], out w) ? w : 0;
+                    door.Width = int.TryParse(graphDoorSizeDivided[0], out w) ? w : 0;
+                    door.Height = int.TryParse(graphDoorSizeDivided[1], out h) ? h : 0;
                     if (door.DoorType.IsDouble)
                     {
-                        if (Array.IndexOf(graphWholeNameDivided, "равные") == -1)
+                        //string[] equalLeafsName = {"равные"};
+                        if (!graphWholeName.Contains("равн"))
                         {
                             int indexWorkLeaf = Array.IndexOf(graphWholeNameDivided, "ств");
                             door.WidthWorkLeaf = indexWorkLeaf > (-1) &&
@@ -121,7 +130,6 @@ namespace TheFirstAddin
                             door.WidthWorkLeaf = (int)Math.Floor((double)(door.Width / 2));
                         }
                     }
-    #endregion
 #endregion
     #region Является ли разборной
                     door.IsCollapsible =
@@ -210,18 +218,21 @@ namespace TheFirstAddin
                     door.Internals.Add(new Door.Internal("Цилиндр замка с комплектом ключей и винтом", 1, UnitSet.Dic[UnitSet.Enum.Kit]));
                     door.Internals.Add(new Door.Internal("Ручка со стяжными винтами и накладками", 1, UnitSet.Dic[UnitSet.Enum.Kit]));
                     door.Internals.Add(new Door.Internal(SquareSet.Dic[door.DoorType.Lock], 1, UnitSet.Dic[UnitSet.Enum.Thing]));
+                    int cap72Count = 0;//Кол-во заглушек 72
+                    int cap112Count = 0;//Кол-во заглушек 112
                     if (door.DoorType.IsDouble)
                     {
                         switch (door.DoorType.Threshold)
                         {
                             case ThresholdSet.Enum.Hight:
                             case ThresholdSet.Enum.Low:
-                                door.Internals.Add(new Door.Internal("Дюбель рамный 10х72", 2, UnitSet.Dic[UnitSet.Enum.Thing]));
+                                cap72Count = 2;
                                 break;
                             default:
+                                cap72Count = 0;
                                 break;
                         }
-                        door.Internals.Add(new Door.Internal("Дюбель рамный 10х112", door.Height < 1700 ? 6 : 8, UnitSet.Dic[UnitSet.Enum.Thing]));
+                        cap112Count = door.Height < 1700 ? 6 : 8;
                     }
                     else
                     {
@@ -229,13 +240,36 @@ namespace TheFirstAddin
                         {
                             case ThresholdSet.Enum.Hight:
                             case ThresholdSet.Enum.Low:
-                                door.Internals.Add(new Door.Internal("Дюбель рамный 10х72", 1, UnitSet.Dic[UnitSet.Enum.Thing]));
+                                cap72Count = 1;
                                 break;
                             default:
+                                cap72Count = 0;
                                 break;
                         }
-                        door.Internals.Add(new Door.Internal("Дюбель рамный 10х112", door.Height < 1700 ? 4 : 6, UnitSet.Dic[UnitSet.Enum.Thing]));
+                        cap112Count = door.Height < 1700 ? 4 : 6;
+                        door.Internals.Add(new Door.Internal("Дюбель рамный 10х112", cap112Count, UnitSet.Dic[UnitSet.Enum.Thing]));
                     }
+                    if (cap72Count > 0)
+                    {
+                        door.Internals.Add(new Door.Internal("Дюбель рамный 10х72", cap72Count, UnitSet.Dic[UnitSet.Enum.Thing]));
+                    }
+                    if (cap112Count > 0)
+                    {
+                        door.Internals.Add(new Door.Internal("Дюбель рамный 10х112", cap112Count,
+                            UnitSet.Dic[UnitSet.Enum.Thing]));
+                    }
+                    if (cap72Count + cap112Count > 0)
+                    {
+                        door.Internals.Add(new Door.Internal("Заглушка Ø16 мм", cap72Count + cap112Count, UnitSet.Dic[UnitSet.Enum.Thing]));
+                    }
+                    door.Internals.Add(new Door.Internal("Шайба регулировочная", (door.IsThreeLoop ? 3 : 2)*(door.DoorType.IsDouble ? 2 : 1)*5,
+                            UnitSet.Dic[UnitSet.Enum.Thing]));
+                    if (door.DoorType.IsDouble)
+                    {
+                        door.Internals.Add(new Door.Internal("Подшипник петлевой",
+                            (door.IsThreeLoop ? 3 : 2)*(door.DoorType.IsDouble ? 2 : 1), UnitSet.Dic[UnitSet.Enum.Thing]));
+                    }
+                    door.Internals.Add(new Door.Internal("Паспорт", 1, UnitSet.Dic[UnitSet.Enum.Thing]));
                     doorList.Add(door);
                 }
             }
