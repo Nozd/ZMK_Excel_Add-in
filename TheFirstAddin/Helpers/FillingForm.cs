@@ -14,13 +14,14 @@ namespace TheFirstAddin
 {
     public static class FillingForm
     {
-        public static void FillSheet(Excel.Workbook wb, List<Door> doorList)
+        public static void FillSheet(Excel.Workbook wb, List<Door> doorList, Excel.Application xl)
         {
             int startRowNumber = 1;
-            int currentRowNumber;
             int sheetCount = 1;
+            int doorCount = 0;
             foreach (var door in doorList)
             {
+                ++doorCount;
                 Excel.Worksheet sh;
                 if (startRowNumber == 1 && sheetCount > wb.Sheets.Count)
                 {
@@ -40,7 +41,7 @@ namespace TheFirstAddin
                 }
                 //
                 Excel.Range activeCell;
-                currentRowNumber = startRowNumber;
+                int currentRowNumber = startRowNumber;
                 if (currentRowNumber == 1)
                 {
                     //sh.Range[sh.Cells[4, 1], sh.Cells[6, 1]].HorizontalAlignment = 1;//TODO: посмотреть, зачем писалась эта строка
@@ -138,15 +139,21 @@ namespace TheFirstAddin
                     Excel.XlLineStyle.xlContinuous;
                 sh.Range[sh.Cells[startRowNumber, 1], sh.Cells[currentRowNumber, 7]].Borders[Excel.XlBordersIndex.xlEdgeRight].LineStyle =
                     Excel.XlLineStyle.xlContinuous;
-                if (startRowNumber != 1)
+                if (startRowNumber != 1 || doorCount == doorList.Count)
                 {
                     ++sheetCount;
-                    string printArea = string.Concat("A1:", sh.Cells[currentRowNumber, 7].Address);//.Replace("$",""));
+                    string printArea = string.Concat("A1:", sh.Cells[currentRowNumber, 7].Address);
+                    xl.PrintCommunication = false;
                     sh.PageSetup.PrintArea = printArea;
-                    Globals.ThisAddIn.Application.PrintCommunication = false;
                     sh.PageSetup.FitToPagesWide = 1;
                     sh.PageSetup.FitToPagesTall = 1;
-                    Globals.ThisAddIn.Application.PrintCommunication = true;
+                    sh.PageSetup.LeftMargin = xl.InchesToPoints(0.2);
+                    sh.PageSetup.RightMargin = xl.InchesToPoints(0.2);
+                    sh.PageSetup.TopMargin = xl.InchesToPoints(0.2);
+                    sh.PageSetup.BottomMargin = xl.InchesToPoints(0.2);
+                    sh.PageSetup.HeaderMargin = xl.InchesToPoints(0.15);
+                    sh.PageSetup.FooterMargin = xl.InchesToPoints(0.15);
+                    xl.PrintCommunication = true;
                 }
                 startRowNumber = startRowNumber == 1 ? currentRowNumber + 1 : 1;
                 

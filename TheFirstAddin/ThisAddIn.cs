@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing.Text;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
@@ -60,14 +61,24 @@ namespace TheFirstAddin
             //
 
             //Create new workBook
-            this.Application.Visible = true;
-            Excel.Workbook newWorkbook = this.Application.Workbooks.Add(missing);
-            newWorkbook.SaveAs(@"D:\Book1.xlsx", missing,
+            string fileName = string.Concat(Environment.UserName, 
+                "-",
+                string.Format("{0:yyyyMMdd_HHmmss}", DateTime.Now),
+                ".xlsx");
+            string filePath = "D:\\";
+            //this.Application.Visible = true;
+            Excel.Application xl = new Excel.Application();
+            xl.Visible = true;
+            xl.SheetsInNewWorkbook = 1;
+            xl.Visible = true;
+            Excel.Workbook newWorkbook = (Excel.Workbook)(xl.Workbooks.Add(Missing.Value));
+            //Excel.Workbook newWorkbook = this.Application.Workbooks.Add(missing);
+            newWorkbook.SaveAs(string.Concat(filePath, fileName), missing,
                 missing, missing, missing, missing, Excel.XlSaveAsAccessMode.xlNoChange,
                 missing, missing, missing, missing, missing);
 
             //Fill form
-            FillingForm.FillSheet(newWorkbook, doorList);
+            FillingForm.FillSheet(newWorkbook, doorList, xl);
 
            
 
