@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
@@ -16,6 +17,16 @@ namespace TheFirstAddin
     {
         public static void FillSheet(Excel.Workbook wb, List<Door> doorList, Excel.Application xl)
         {
+            string configPacker = ConfigurationManager.AppSettings["configPacker"];
+            configPacker = configPacker ?? "";
+            string configContoller = ConfigurationManager.AppSettings["configContoller"];
+            configContoller = configContoller ?? "";
+            string configMaster = ConfigurationManager.AppSettings["configMaster"];
+            configMaster = configMaster ?? "";
+            bool setCurrentDate = !string.IsNullOrEmpty(ConfigurationManager.AppSettings["configSetCurrentDate"])
+                && string.Equals(ConfigurationManager.AppSettings["configSetCurrentDate"].ToLower(), "да");
+            string currentDate = setCurrentDate ? string.Format("{0:dd.MM.yyyy}", DateTime.Now) : "";
+
             int startRowNumber = 1;
             int sheetCount = 1;
             int doorCount = 0;
@@ -104,7 +115,9 @@ namespace TheFirstAddin
                 sh.Cells[currentRowNumber, 1] = "Упаковщик";
                 sh.Range[sh.Cells[currentRowNumber, 2], sh.Cells[currentRowNumber, 7]].Borders[Excel.XlBordersIndex.xlEdgeBottom].LineStyle =
                     Excel.XlLineStyle.xlContinuous;
-                sh.Cells[currentRowNumber, 5] = "Мосина Н.Г.";
+                sh.Range[sh.Cells[currentRowNumber, 4], sh.Cells[currentRowNumber, 4]].HorizontalAlignment = 3;
+                sh.Cells[currentRowNumber, 4] = currentDate;
+                sh.Cells[currentRowNumber, 5] = configPacker;
                 ++currentRowNumber;
                 sh.Cells[currentRowNumber, 3] = "подпись";
                 sh.Cells[currentRowNumber, 4] = "дата";
@@ -114,7 +127,9 @@ namespace TheFirstAddin
                 sh.Cells[currentRowNumber, 1] = "Контролёр";
                 sh.Range[sh.Cells[currentRowNumber, 2], sh.Cells[currentRowNumber, 7]].Borders[Excel.XlBordersIndex.xlEdgeBottom].LineStyle =
                     Excel.XlLineStyle.xlContinuous;
-                sh.Cells[currentRowNumber, 5] = "";
+                sh.Range[sh.Cells[currentRowNumber, 4], sh.Cells[currentRowNumber, 4]].HorizontalAlignment = 3;
+                sh.Cells[currentRowNumber, 4] = currentDate;
+                sh.Cells[currentRowNumber, 5] = configContoller;
                 ++currentRowNumber;
                 sh.Cells[currentRowNumber, 3] = "подпись";
                 sh.Cells[currentRowNumber, 4] = "дата";
@@ -124,7 +139,9 @@ namespace TheFirstAddin
                 sh.Cells[currentRowNumber, 1] = "Мастер участка";
                 sh.Range[sh.Cells[currentRowNumber, 2], sh.Cells[currentRowNumber, 7]].Borders[Excel.XlBordersIndex.xlEdgeBottom].LineStyle =
                     Excel.XlLineStyle.xlContinuous;
-                sh.Cells[currentRowNumber, 5] = "Зельнев А.Н.";
+                sh.Range[sh.Cells[currentRowNumber, 4], sh.Cells[currentRowNumber, 4]].HorizontalAlignment = 3;
+                sh.Cells[currentRowNumber, 4] = currentDate;
+                sh.Cells[currentRowNumber, 5] = configMaster;
                 ++currentRowNumber;
                 sh.Cells[currentRowNumber, 3] = "подпись";
                 sh.Cells[currentRowNumber, 4] = "дата";
