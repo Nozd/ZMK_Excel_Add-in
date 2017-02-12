@@ -21,6 +21,7 @@ namespace TheFirstAddin
             Excel.Worksheet sheet = app.ActiveSheet;
             List<Door> doorList = new List<Door>();
             DoorTypeSet dts = new DoorTypeSet();
+            List<string> errorRowList = new List<string>();
             foreach (Excel.Range area in range.Areas)
             {
                 foreach (Excel.Range row in area.Rows)
@@ -33,7 +34,7 @@ namespace TheFirstAddin
                     door.NumberDoor = sheet.Cells[y, 4].Value;
                     //
                     #region Парсим остекление
-                    string graphGlazing = sheet.Cells[y, 18].Value.Trim(new[] { ' ' });
+                    string graphGlazing = sheet.Cells[y, 18].Value;
                     graphGlazing = string.IsNullOrEmpty(graphGlazing) ? "" : graphGlazing.Trim(new[] { ' ' }).ToLower();
                     if (string.Equals(graphGlazing, "нет") || string.IsNullOrEmpty(graphGlazing))
                     {
@@ -62,6 +63,11 @@ namespace TheFirstAddin
                             door.DoorType = dtsItem;
                             break;
                         }
+                    }
+                    if (!door.IsIdentified)
+                    {
+                        errorRowList.Add(y.ToString());
+                        continue;
                     }
                     //Является ли двухстворчатой
                     if (door.IsIdentified && PassportNameSet.Dic[door.DoorType.PassportNameEnum].Contains('2'))
@@ -235,6 +241,17 @@ namespace TheFirstAddin
                     door.Internals.Add(new Door.Internal("Паспорт", 1, UnitSet.Dic[UnitSet.Enum.Thing]));
                     doorList.Add(door);
                 }
+            }
+            if (errorRowList.Any())
+            {
+                StringBuilder errorRows = new StringBuilder("Не удастся создать упаковочный лист для следующих строк:");
+                foreach (string item in errorRowList)
+                {
+                    errorRows.Append(string.Concat("\n", item, ", "));
+                }
+                string errorMessage = errorRows.ToString();
+                errorRows[errorMessage.LastIndexOf(',')] = '.';
+                MessageBox.Show(errorRows.ToString());
             }
             return doorList;
         }

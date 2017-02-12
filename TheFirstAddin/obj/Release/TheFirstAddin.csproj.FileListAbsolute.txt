@@ -11,3 +11,4 @@ D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\bin\Release\Microsoft.
 D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\bin\Release\Microsoft.Office.Tools.Common.v4.0.Utilities.xml
 D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\obj\Release\TheFirstAddin.dll
 D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\obj\Release\TheFirstAddin.pdb
+D:\Pr\study\Nozd\WCF_Troelsen\TheFirstAddin\TheFirstAddin\obj\Release\TheFirstAddin.csprojResolveAssemblyReference.cache
