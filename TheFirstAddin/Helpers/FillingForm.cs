@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Windows.Forms;
@@ -17,15 +19,26 @@ namespace TheFirstAddin
     {
         public static void FillSheet(Excel.Workbook wb, List<Door> doorList, Excel.Application xl)
         {
-            string configPacker = ConfigurationManager.AppSettings["configPacker"];
-            configPacker = configPacker ?? "";
-            string configContoller = ConfigurationManager.AppSettings["configContoller"];
-            configContoller = configContoller ?? "";
-            string configMaster = ConfigurationManager.AppSettings["configMaster"];
-            configMaster = configMaster ?? "";
-            bool setCurrentDate = !string.IsNullOrEmpty(ConfigurationManager.AppSettings["configSetCurrentDate"])
-                && string.Equals(ConfigurationManager.AppSettings["configSetCurrentDate"].ToLower(), "да");
-            string currentDate = setCurrentDate ? string.Format("{0:dd.MM.yyyy}", DateTime.Now) : "";
+            string configPacker;
+            string configContoller;
+            string configMaster;
+            string currentDate;
+            string customerAppConfigPath = AppConfig.GetCustomerAppConfigPath();
+
+            if(!string.IsNullOrEmpty(customerAppConfigPath))
+            {
+                using (
+                    AppConfig.Change(customerAppConfigPath)
+                    )
+                {
+                    ApplyConfig(out configPacker, out configContoller, out configMaster, out currentDate);
+                }
+            }
+            else
+            {
+                ApplyConfig(out configPacker, out configContoller, out configMaster, out currentDate);
+            }
+
 
             int startRowNumber = 1;
             int sheetCount = 1;
@@ -177,6 +190,22 @@ namespace TheFirstAddin
                 //
             }
             wb.Save();
+        }
+
+        private static void ApplyConfig(out string configPacker, out string configContoller, out string configMaster,
+            out string currentDate)
+        {
+            configPacker = ConfigurationManager.AppSettings["configPacker"];
+            configPacker = configPacker ?? "";
+            configContoller = ConfigurationManager.AppSettings["configContoller"];
+            configContoller = configContoller ?? "";
+            configMaster = ConfigurationManager.AppSettings["configMaster"];
+            configMaster = configMaster ?? "";
+            bool setCurrentDate = !string.IsNullOrEmpty(ConfigurationManager.AppSettings["configSetCurrentDate"])
+                             &&
+                             string.Equals(ConfigurationManager.AppSettings["configSetCurrentDate"].ToLower(),
+                                 "да");
+            currentDate = setCurrentDate ? string.Format("{0:dd.MM.yyyy}", DateTime.Now) : "";
         }
     }
 }

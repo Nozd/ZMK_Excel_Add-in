@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Configuration;
 using System.Drawing.Text;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -62,21 +63,9 @@ namespace TheFirstAddin
             //
 
             //Create new workBook
-            string fileName = string.Concat(Environment.UserName, 
-                "-",
-                string.Format("{0:yyyyMMdd_HHmmss}", DateTime.Now),
-                ".xlsx");
-            string filePath = "D:\\";
-            //this.Application.Visible = true;
             Excel.Application xl = new Excel.Application();
-            xl.Visible = true;
-            xl.SheetsInNewWorkbook = 1;
-            xl.Visible = true;
-            Excel.Workbook newWorkbook = (Excel.Workbook)(xl.Workbooks.Add(Missing.Value));
-            //Excel.Workbook newWorkbook = this.Application.Workbooks.Add(missing);
-            newWorkbook.SaveAs(string.Concat(filePath, fileName), missing,
-                missing, missing, missing, missing, Excel.XlSaveAsAccessMode.xlNoChange,
-                missing, missing, missing, missing, missing);
+            Excel.Workbook newWorkbook = Helpers.CreateNewWorkBook(xl);
+            
 
             //Fill form
             FillingForm.FillSheet(newWorkbook, doorList, xl);

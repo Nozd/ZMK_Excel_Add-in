@@ -44,7 +44,7 @@
             // 
             this.tab1.ControlId.ControlIdType = Microsoft.Office.Tools.Ribbon.RibbonControlIdType.Office;
             this.tab1.Groups.Add(this.group1);
-            this.tab1.Label = "PassportTab";
+            this.tab1.Label = "Упаковочный лист";
             this.tab1.Name = "tab1";
             // 
             // group1
@@ -55,7 +55,7 @@
             // 
             // Passport
             // 
-            this.Passport.Label = "Passport";
+            this.Passport.Label = "Создать упаковочный лист";
             this.Passport.Name = "Passport";
             this.Passport.Click += new Microsoft.Office.Tools.Ribbon.RibbonControlEventHandler(this.Passport_Click);
             // 
