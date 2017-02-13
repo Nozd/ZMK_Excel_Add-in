@@ -55,7 +55,7 @@ namespace TheFirstAddin
                     string graphWholeName = sheet.Cells[y, 5].Value;
                     graphWholeName = string.IsNullOrEmpty(graphWholeName) ? "" : graphWholeName.Trim(new[] { ' ' }).ToLower();
                     //Идентификация двери
-                    string[] graphWholeNameDivided = graphWholeName.Split(new string[] { " ", "(", ")", ".", "mm", "мм" }, StringSplitOptions.None);
+                    string[] graphWholeNameDivided = graphWholeName.Split(new string[] { " " }, StringSplitOptions.None);
                     foreach (var dtsItem in dts.DoorTS)
                     {
                         if (String.Equals(graphWholeNameDivided[0], dtsItem.GraphName))
@@ -64,11 +64,32 @@ namespace TheFirstAddin
                             break;
                         }
                     }
+                    //if (graphWholeName.Contains("Порог приставной к двери".ToLower()))
+                    //{
+                    //    //TODO: подумать
+                    //    door.DoorType = new doorType
+                    //    {
+                    //        GraphName = "Порог приставной к двери",
+                    //        PassportNameEnum = PassportNameSet.Enum.ThreSholdAddl,
+                    //        IsSpecial = true
+                    //    };
+                    //    door.NumberDoor =
+                    //        graphWholeName.Remove(0, door.DoorType.GraphName.Length).Trim(new[] {' '}).Split(new []{' ', ','})[0];
+                    //}
                     if (!door.IsIdentified)
                     {
                         errorRowList.Add(y.ToString());
                         continue;
                     }
+                    if (door.DoorType.IsSpecial)
+                    {
+                        door.Internals = SpecialDoorSet.Dic[door.DoorType.PassportNameEnum];
+                        doorList.Add(door);
+                        continue;
+                    }
+                    //TODO: подумать
+                    graphWholeNameDivided = graphWholeName.Split(new string[] { " ", "(", ")", ".", "mm", "мм" }, StringSplitOptions.None);
+                    
                     //Является ли двухстворчатой
                     if (door.IsIdentified && PassportNameSet.Dic[door.DoorType.PassportNameEnum].Contains('2'))
                     {

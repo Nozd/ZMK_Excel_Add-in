@@ -181,6 +181,7 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="Data\SpecialDoorSet.cs" />
     <Compile Include="Helpers\AppConfig.cs" />
     <Compile Include="Data\DescriptionMainLeafSet.cs" />
     <Compile Include="Data\DescriptionSecondLeafSet.cs" />

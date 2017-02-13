@@ -74,6 +74,16 @@ namespace TheFirstAddin
 #region Двухстворки
                 {new doorType
                 {
+                    GraphName = "ДПМ-200-ЛУ",
+                    PassportNameEnum = PassportNameSet.Enum.DM_200
+                }},
+                {new doorType
+                {
+                    GraphName = "ДПМ-200-ПУ",
+                    PassportNameEnum = PassportNameSet.Enum.DM_200
+                }},
+                {new doorType
+                {
                     GraphName = "ДПМ-230-ЛУ",
                     PassportNameEnum = PassportNameSet.Enum.DPM_02_30k
                 }},
@@ -95,6 +105,16 @@ namespace TheFirstAddin
     #region Двухстворки с остеклением
                     {new doorType
                     {
+                        GraphName = "ДПМО-200-ЛУ",
+                        PassportNameEnum = PassportNameSet.Enum.DM_200
+                    }},
+                    {new doorType
+                    {
+                        GraphName = "ДПМО-200-ПУ",
+                        PassportNameEnum = PassportNameSet.Enum.DM_200
+                    }},
+                    {new doorType
+                    {
                         GraphName = "ДПМО-230-ЛУ",
                         PassportNameEnum = PassportNameSet.Enum.DPM_02_30k
                     }},
@@ -114,6 +134,40 @@ namespace TheFirstAddin
                         PassportNameEnum = PassportNameSet.Enum.DPM_02_60k
                     }},
     #endregion
+#endregion
+#region Специальные двери 
+                    {new doorType
+                    {
+                    GraphName = "ДМ-100-ЛСпец-(МД-5)",
+                    PassportNameEnum = PassportNameSet.Enum.MD_5,
+                    IsSpecial = true
+                    }},
+                    {new doorType
+                    {
+                    GraphName = "ДМ-100-ПСпец-(МД-5)",
+                    PassportNameEnum = PassportNameSet.Enum.MD_5,
+                    IsSpecial = true
+                    }},
+                    {new doorType
+                    {
+                    GraphName = "ДМ-100-ЛТ-(МД-7)",
+                    PassportNameEnum = PassportNameSet.Enum.MD_7,
+                    IsSpecial = true
+                    }},
+                    {new doorType
+                    {
+                    GraphName = "ДМ-100-ПТ-(МД-7)",
+                    PassportNameEnum = PassportNameSet.Enum.MD_7,
+                    IsSpecial = true
+                    }},
+#endregion
+#region Other
+                    {new doorType
+                    {
+                        GraphName = "Порог приставной к двери",
+                        PassportNameEnum = PassportNameSet.Enum.ThreSholdAddl,
+                        IsSpecial = true
+                    }}
 #endregion
             };
         }

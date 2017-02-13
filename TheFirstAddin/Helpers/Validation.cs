@@ -63,7 +63,7 @@ namespace TheFirstAddin
         private static bool ShowNonValidationMessage()
         {
             MessageBox.Show("Error!" +
-                            "\nВыделенная область имеет неверный формат или содеsdfржит недопустимые данные" +
+                            "\nВыделенная область имеет неверный формат или содержит недопустимые данные" +
                             "\nСборосьте выделение и выберите заново одну или несколько строк");
             return false;
         }

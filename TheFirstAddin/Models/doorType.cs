@@ -17,8 +17,8 @@ namespace TheFirstAddin
 
         public string GraphName
         {
-            get { return _graphName.ToLower(); }
-            set { _graphName = value; }
+            get { return _graphName; }
+            set { _graphName = value.ToLower(); }
         }//Название в графике
         public PassportNameSet.Enum PassportNameEnum { get; set; }//Название в паспорте
         public ThresholdSet.Enum Threshold { get; set; }//Тип порога
@@ -37,5 +37,6 @@ namespace TheFirstAddin
             set { _isAngular = value; }
         }//Является угловой
         public bool IsGlazed { get; set; }//Есть ли остекление
+        public bool IsSpecial { get; set; }//Является ли специальной, для к-рой есть отдельный упаковочный лист
     }
 }
