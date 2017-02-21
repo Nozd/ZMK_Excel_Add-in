@@ -55,7 +55,8 @@ namespace TheFirstAddin
                     string graphWholeName = sheet.Cells[y, 5].Value;
                     graphWholeName = string.IsNullOrEmpty(graphWholeName) ? "" : graphWholeName.Trim(new[] { ' ' }).ToLower();
                     //Идентификация двери
-                    string[] graphWholeNameDivided = graphWholeName.Split(new string[] { " " }, StringSplitOptions.None);
+                    string[] graphWholeNameDivided = graphWholeName.Split(new string[] { "(" }, StringSplitOptions.RemoveEmptyEntries);
+                    graphWholeNameDivided[0] = graphWholeNameDivided[0].Trim();
                     foreach (var dtsItem in dts.DoorTS)
                     {
                         if (String.Equals(graphWholeNameDivided[0], dtsItem.GraphName))
@@ -98,28 +99,34 @@ namespace TheFirstAddin
 
                     #endregion
                     #region Парсим размеры двери
-                    string graphDoorSize = sheet.Cells[y, 8].Value.Trim(new[] { ' ' });
-                    graphDoorSize = string.IsNullOrEmpty(graphDoorSize) ? "" : graphDoorSize.Trim(new[] { ' ' }).ToLower();
-                    string[] graphDoorSizeDivided = graphDoorSize.Split(new char[] { '*', 'x', 'х' });
-                    int h, w, wwl;
-                    door.Width = int.TryParse(graphDoorSizeDivided[0], out w) ? w : 0;
-                    door.Height = int.TryParse(graphDoorSizeDivided[1], out h) ? h : 0;
-                    if (door.DoorType.IsDouble)
+                    string regPattern = @"\(\d+\s+[x,х,\*]\s\d+";
+                    Regex regex = new Regex(regPattern);
+                    Match match = regex.Match(graphWholeName);
+                    string graphDoorSize = match.Groups[0].ToString().Trim(new[] { '(' });
+                    if (!string.IsNullOrEmpty((graphDoorSize)))
                     {
-                        //string[] equalLeafsName = {"равные"};
-                        if (!graphWholeName.Contains("равн"))
+                        string[] graphDoorSizeDivided = graphDoorSize.Split(new char[] {'*', 'x', 'х'});
+                        int h, w, wwl;
+                        door.Width = int.TryParse(graphDoorSizeDivided[0], out w) ? w : 0;
+                        door.Height = int.TryParse(graphDoorSizeDivided[1], out h) ? h : 0;
+                        if (door.DoorType.IsDouble)
                         {
-                            int indexWorkLeaf = Array.IndexOf(graphWholeNameDivided, "ств");
-                            door.WidthWorkLeaf = indexWorkLeaf > (-1) &&
-                                                 int.TryParse(graphWholeNameDivided[indexWorkLeaf + 1], out wwl)
-                                ? wwl
-                                : 0;
-                        }
-                        else
-                        {
-                            door.WidthWorkLeaf = (int)Math.Floor((double)(door.Width / 2));
+                            //string[] equalLeafsName = {"равные"};
+                            if (!graphWholeName.Contains("равн"))
+                            {
+                                int indexWorkLeaf = Array.IndexOf(graphWholeNameDivided, "ств");
+                                door.WidthWorkLeaf = indexWorkLeaf > (-1) &&
+                                                     int.TryParse(graphWholeNameDivided[indexWorkLeaf + 1], out wwl)
+                                    ? wwl
+                                    : 0;
+                            }
+                            else
+                            {
+                                door.WidthWorkLeaf = (int) Math.Floor((double) (door.Width/2));
+                            }
                         }
                     }
+
                     #endregion
                     #region Является ли разборной
                     door.IsCollapsible =
@@ -237,7 +244,6 @@ namespace TheFirstAddin
                                 break;
                         }
                         cap112Count = door.Height < 1700 ? 4 : 6;
-                        door.Internals.Add(new Door.Internal("Дюбель рамный 10х112", cap112Count, UnitSet.Dic[UnitSet.Enum.Thing]));
                     }
                     if (cap72Count > 0)
                     {

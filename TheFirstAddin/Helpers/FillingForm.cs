@@ -174,6 +174,7 @@ namespace TheFirstAddin
                     ++sheetCount;
                     string printArea = string.Concat("A1:", sh.Cells[currentRowNumber, 7].Address);
                     xl.PrintCommunication = false;
+                    sh.PageSetup.PaperSize = Excel.XlPaperSize.xlPaperA3;
                     sh.PageSetup.PrintArea = printArea;
                     sh.PageSetup.FitToPagesWide = 1;
                     sh.PageSetup.FitToPagesTall = 1;
